@@ -45,3 +45,19 @@ make test
 ```
 
 Good luck!
+
+## Changelog
+
+**Changes for Backend Tests**
+
+To fix TestSearchCaseSensitive: Store the complete works as lowercase bytes in SuffixArray (in the Load function) & also lowercase the query string before performing the lookup against lowercased suffix array (in the Search function)All code changes were made in main.go.
+
+To fix TestSearchDrunk: Update the Search function to return results in pages of max 20 results each. For this I added support for a "page" param to the /search request, so frontend can increment this param and pass through to /search for the next page of results. handleSearch then passes this param through to the Search function eventually. All code changes were made in main.go.
+
+**Changes for Frontend Tests**
+
+should return search results for "romeo, wherefore art thou": I think this test was fixed by the fix for TestSearchCaseSensitive.
+
+should load more results for "horse" when clicking "Load More": Added an event listener to the "Load More" button to actually pass through the incremented page number and append the next page of results to the existing results from initial "Search". Updated app.js to pass through the incremented page number correctly to the /search request on clicking "Load More".
+
+P.S: Hacky but I also had to bump the timeout for mocha in package.json to resolve some timeouts when running frontend tests locally: https://stackoverflow.com/a/51586973
